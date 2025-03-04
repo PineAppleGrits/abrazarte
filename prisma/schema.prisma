@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Geriatric {
+  id                 String  @id @default(cuid())
+  name               String
+  description        String
+  images             Image[]
+  rating             Float   @default(0)
+  reviewCount        Int     @default(0)
+  priceRangeMin      Float?
+  priceRangeMax      Float?
+  hasDayCare         Boolean @default(false)
+  hasPermanentStay   Boolean @default(false)
+  hasPrivateRoom     Boolean @default(false)
+  hasSharedRoom      Boolean @default(false)
+  hasPrivateBath     Boolean @default(false)
+  hasSharedBath      Boolean @default(false)
+  hasBasicCare       Boolean @default(false)
+  hasSpecializedCare Boolean @default(false)
+  hasAlzheimerCare   Boolean @default(false)
+  hasReducedMobility Boolean @default(false)
+  has24hMedical      Boolean @default(false)
+  mainImage          String?
+
+  country      String
+  city         String
+  province     String
+  street       String
+  streetNumber String
+  latitude     Float
+  longitude    Float
+  address      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  therapies GeriatricTherapy[]
+  favorites Favorite[]
+  reviews   Review[]
+}
+
+model Image {
+  id          String    @id @default(cuid())
+  geriatricId String
+  geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
+  url         String
+  createdAt   DateTime  @default(now())
+}
+
+model GeriatricTherapy {
+  id          String    @id @default(cuid())
+  geriatricId String
+  therapy     Therapy
+  geriatric   Geriatric @relation(references: [id], fields: [geriatricId])
+
+  @@unique([geriatricId, therapy])
+}
+
+enum Therapy {
+  KINESIOLOGY
+  OCCUPATIONAL
+  PSYCHOLOGICAL
+  NUTRITIONIST
+}
+
+model Favorite {
+  id          String    @id @default(cuid())
+  userId      String
+  geriatricId String
+  geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([userId, geriatricId])
+}
+
+model SearchLog {
+  id           String   @id @default(cuid())
+  userId       String?
+  filters      Json
+  resultsCount Int
+  createdAt    DateTime @default(now())
+}
+
+model Review {
+  id          String    @id @default(cuid())
+  userId      String
+  geriatricId String
+  geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
+  rating      Float
+  comment     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, geriatricId])
+}
