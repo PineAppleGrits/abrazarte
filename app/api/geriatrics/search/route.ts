@@ -3,6 +3,8 @@ import prisma from "@/prisma";
 import { Geriatric, GeriatricTherapy, Image, Prisma, Therapy } from "@prisma/client";
 import { SearchResult } from "@/types/common";
 
+export const dynamic = "force-dynamic";
+
 // A helper function that maps the provided therapy string to a valid Therapy enum value.
 function mapTherapy(value: string): Therapy | undefined {
   switch (value.toLowerCase()) {

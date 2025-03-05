@@ -11,7 +11,7 @@ interface GeriatricCardProps {
 }
 
 export default function GeriatricCard({ geriatric, handleAddToFavorites, favoritesMutation }: GeriatricCardProps) {
-  // Map a 0-10 rating to a 0-5 star scale
+
   const starRating = Math.round((geriatric.rating / 10) * 5);
 
   const ratingLabel =

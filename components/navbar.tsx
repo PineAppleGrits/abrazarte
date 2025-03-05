@@ -58,7 +58,7 @@ export function Navbar({ loggedIn = false, userName = "" }: { loggedIn?: boolean
           <Link href="/buscar-geriatrico" className="text-white px-4 py-6 hover:bg-primary-foreground/10">
             BUSCAR GERIÁTRICO
           </Link>
-          <Link href="/notas-de-interes" className="text-white px-4 py-6 hover:bg-primary-foreground/10">
+          <Link href="/blog" className="text-white px-4 py-6 hover:bg-primary-foreground/10">
             NOTAS DE INTERÉS
           </Link>
         </nav>

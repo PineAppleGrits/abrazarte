@@ -13,24 +13,24 @@ interface GeriatricsListProps {
 export function GeriatricsList({ infiniteQuery, handleAddToFavorites, favoritesMutation }: GeriatricsListProps) {
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = infiniteQuery;
 
-  // Setup intersection observer for infinite scrolling
+
   const { ref, inView } = useInView({
     threshold: 0.1,
     rootMargin: "0px 0px 300px 0px",
   });
 
-  // Trigger fetch when scrolled into view
+
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchNextPage();
   }
 
-  // Calculate total items across all pages
+
   const totalItems = data?.pages[0]?.pagination.total || 0;
 
-  // Flatten the geriatrics from all pages
+
   const allGeriatrics = data?.pages.flatMap((page) => page.geriatrics) || [];
 
-  // Get secondary results (only from the first page)
+
   const secondaryResults = data?.pages[0]?.secondaryResults || [];
 
   if (isLoading && !isFetchingNextPage) {

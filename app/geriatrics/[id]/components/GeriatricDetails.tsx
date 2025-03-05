@@ -52,8 +52,8 @@ export function GeriatricDetails({ geriatric, initialIsFavorite = false }: Geria
   const toggleFavorite = async () => {
     try {
       setIsLoading(true);
-      // Implement your API call here.
-      // Simulate a delay or successful call and then:
+
+
       setIsFavorite((prev) => !prev);
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -240,7 +240,6 @@ export function GeriatricDetails({ geriatric, initialIsFavorite = false }: Geria
                   label="Accesibilidad Reducida"
                   description="Instalaciones adaptadas para movilidad reducida"
                 />
-                {/* Add more additional services here as needed */}
               </div>
             </div>
           </div>

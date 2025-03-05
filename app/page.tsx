@@ -227,7 +227,7 @@ export default function Home() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/notas-de-interes" className="text-gray-300 hover:text-white">
+                  <Link href="/blog" className="text-gray-300 hover:text-white">
                     Notas de interés
                   </Link>
                 </li>

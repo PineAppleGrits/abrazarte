@@ -10,13 +10,13 @@ export default function ImageUploader() {
     formState: { errors },
   } = useFormContext<GeriatricFormWithImages>();
 
-  // Initialize field array for images
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "images",
   });
 
-  // When the component unmounts or a field is removed, release the object URLs.
+
   useEffect(() => {
     return () => {
       fields.forEach((field) => URL.revokeObjectURL(field.preview));
@@ -28,7 +28,7 @@ export default function ImageUploader() {
       const filesArray = Array.from(e.target.files);
       filesArray.forEach((file) => {
         const preview = URL.createObjectURL(file);
-        // Append the file with its preview to our field array.
+
         append({ file, preview });
       });
     }

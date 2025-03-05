@@ -2,6 +2,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import type { Review } from "@prisma/client";
+import { formatDate } from "@/lib/utils";
 
 interface ReviewsProps {
   reviews: Review[];
@@ -25,7 +26,7 @@ export function Reviews({ reviews }: ReviewsProps) {
                   </div>
                 </div>
                 {review.comment && <p className="mt-2 text-gray-600">{review.comment}</p>}
-                <div className="mt-2 text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</div>
+                <div className="mt-2 text-sm text-gray-500">{formatDate(review.createdAt)}</div>
               </div>
             </div>
           </div>

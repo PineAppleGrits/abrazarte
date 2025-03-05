@@ -1,5 +1,5 @@
-import { Geriatric } from "@prisma/client";
-
+import { BlogCategory, Geriatric } from "@prisma/client";
+import { BlogPost as PrismBlogPost } from "@prisma/client";
 export type SearchFilters = {
   searchQuery: string;
   stayType: {
@@ -55,3 +55,9 @@ export type GeriatricSearchResult = Geriatric & {
   therapies: string[];
   mainImage: string | null;
 };
+
+interface BlogPost extends PrismBlogPost {
+  category: BlogCategory;
+}
+export { BlogCategory, type BlogPost };
+

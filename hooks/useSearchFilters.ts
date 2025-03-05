@@ -6,7 +6,6 @@ export const useSearchFilters = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Initialize filters from URL params
   const [filters, setFilters] = useState<SearchFilters>({
     searchQuery: searchParams.get("q") || "",
     stayType: {
@@ -50,9 +49,7 @@ export const useSearchFilters = () => {
     max: filters.priceRange.max,
   });
 
-  // Function to apply filters and update URL
   const applyFilters = () => {
-    // Build query parameters from filters
     const params = new URLSearchParams();
 
     if (filters.searchQuery) params.append("q", filters.searchQuery);
@@ -71,7 +68,6 @@ export const useSearchFilters = () => {
     if (filters.medicalCare.reducedMobility) params.append("hasReducedMobility", "true");
     if (filters.medicalCare.medical24h) params.append("has24hMedical", "true");
 
-    // For therapies
     if (filters.therapies.kinesiology) params.append("therapies", "kinesiology");
     if (filters.therapies.occupational) params.append("therapies", "occupational");
     if (filters.therapies.psychological) params.append("therapies", "psychological");
@@ -84,11 +80,9 @@ export const useSearchFilters = () => {
     if (filters.province) params.append("province", filters.province);
     if (filters.country) params.append("country", filters.country);
 
-    // Update URL with filters
     router.push(`/buscar-geriatrico?${params.toString()}`, { scroll: false });
   };
 
-  // Reset all filters
   const resetFilters = () => {
     setFilters({
       searchQuery: "",
@@ -115,7 +109,6 @@ export const useSearchFilters = () => {
     });
     setTempPriceRange({ min: 0, max: 500000 });
 
-    // Clear URL params and trigger new search
     router.push("/buscar-geriatrico");
   };
 

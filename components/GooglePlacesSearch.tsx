@@ -30,8 +30,8 @@ export function GooglePlacesSearch({
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
-  // `value` holds the current input text;
-  // `isValid` indicates if the current value comes from a valid selection
+
+
   const [value, setValue] = useState("");
   const [isValid, setIsValid] = useState(false);
 
@@ -43,7 +43,7 @@ export function GooglePlacesSearch({
       fields: ["address_components", "geometry", "formatted_address"],
     });
 
-    // Prevent form submission on enter
+
     inputRef.current.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -71,9 +71,9 @@ export function GooglePlacesSearch({
         longitude: place.geometry.location?.lng() || 0,
       };
 
-      // Update the input value to the valid, formatted address.
+
       setValue(place.formatted_address!);
-      // mark the input as valid
+
       setIsValid(true);
       onPlaceSelect(placeData);
     });
@@ -85,16 +85,16 @@ export function GooglePlacesSearch({
     <Input
       ref={inputRef}
       type="text"
-      // The displayed value is controlled by state
+
       value={value}
       onChange={(e) => {
-        // When the user types, update the text and mark it as not
-        // valid until a valid selection is made.
+
+
         setValue(e.target.value);
         setIsValid(false);
       }}
-      // On blur, if the content wasn’t validated by the autocomplete,
-      // clear the input.
+
+
       onBlur={() => {
         if (!isValid) {
           setValue("");
@@ -103,7 +103,7 @@ export function GooglePlacesSearch({
       placeholder={placeholder}
       className="w-full"
       error={error}
-      // Prevent form submission on enter
+
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();

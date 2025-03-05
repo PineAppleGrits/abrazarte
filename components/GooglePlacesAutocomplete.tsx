@@ -40,7 +40,7 @@ export function GooglePlacesAutocomplete({
       fields: ["address_components", "geometry", "formatted_address"],
     });
 
-    // Prevent form submission on enter
+
     inputRef.current.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -83,7 +83,7 @@ export function GooglePlacesAutocomplete({
       placeholder={placeholder}
       className="w-full"
       error={error}
-      // Prevent form submission on enter
+
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();

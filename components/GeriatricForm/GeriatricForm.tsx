@@ -12,8 +12,6 @@ import type { GeriatricFormData } from "./types";
 import { Card } from "../ui/card";
 import ImageUploader from "../CloudinaryImageUploader";
 
-// Extend the schema to include images. araña ojo corredor
-// Here we only validate other fields; images will be handled via a field array.
 const geriatricSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
   description: z.string().min(1, "La descripcion es requerida"),
@@ -40,7 +38,7 @@ const geriatricSchema = z.object({
   country: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  // images will be added as a field array.
+
   images: z
     .array(
       z.object({
@@ -51,12 +49,11 @@ const geriatricSchema = z.object({
     .min(1, "Debe subir al menos una imagen"),
 });
 
-// Extend the form data type with a field array for images.
 export type GeriatricFormWithImages = z.infer<typeof geriatricSchema>;
 
 interface GeriatricFormProps {
   initialData?: GeriatricFormData;
-  // onSubmit will receive the regular form data along with the image URLs
+
   onSubmit: (
     data: Omit<GeriatricFormWithImages, "images"> & {
       imageUrls: string[];
@@ -93,7 +90,6 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
 
   const [uploading, setUploading] = useState(false);
 
-  // Cloudinary configuration
   const CLOUDINARY_API_URL = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
 
   const handlePlaceSelect = (place: Place) => {
@@ -106,9 +102,8 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
     setValue("latitude", place.latitude);
     setValue("longitude", place.longitude);
   };
-  // Function to upload a single image to Cloudinary using signed uploads
+
   const uploadImageToCloudinary = async (file: File): Promise<string> => {
-    // Fetch the signature and API key from your API route
     const { data } = await axios.post("/api/cloudinary-signature");
     const { signature, timestamp, apiKey } = data;
 
@@ -122,12 +117,9 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
     return response.data.secure_url;
   };
 
-  // Function to upload images to Cloudinary.
-  // Returns an array with the secure_url for each image.
   const uploadImagesToCloudinary = async (images: { file: File }[]): Promise<string[]> => {
     setUploading(true);
     try {
-      // Map each image file to its upload promise
       const uploadPromises = images.map((image) => uploadImageToCloudinary(image.file));
       const urls = await Promise.all(uploadPromises);
       return urls;
@@ -142,12 +134,10 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
   const handleFormSubmit = async (data: GeriatricFormWithImages) => {
     let imageUrls: string[] = [];
 
-    // Check if there are images to upload
     if (data.images.length > 0) {
       imageUrls = await uploadImagesToCloudinary(data.images);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { images, ...formData } = data;
     await onSubmit({ ...formData, imageUrls });
   };
@@ -278,7 +268,6 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
   );
 }
 
-// Helper function to translate therapy labels
 function getTherapyLabel(therapy: Therapy): string {
   const labels: Record<Therapy, string> = {
     KINESIOLOGY: "Kinesiología",
