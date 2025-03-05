@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { GeriatricFormWithImages } from "./GeriatricForm/GeriatricForm"; // adjust import as needed
+import { GeriatricFormWithImages } from "./GeriatricForm/GeriatricForm"; 
 
 export default function ImageUploader() {
   const {

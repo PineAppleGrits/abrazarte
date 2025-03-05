@@ -107,3 +107,13 @@ model Review {
 
   @@unique([userId, geriatricId])
 }
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  quote     String
+  location  String
+  rating    Int
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}

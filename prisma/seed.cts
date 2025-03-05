@@ -2,7 +2,7 @@ import { PrismaClient, Therapy } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 const prisma = new PrismaClient();
 async function main() {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 25; i++) {
     const reviews = faker.number.int(7);
     await prisma.geriatric.create({
       data: {
@@ -53,6 +53,17 @@ async function main() {
 
         street: faker.location.street(),
         streetNumber: String(faker.number.int(7000)),
+      },
+    });
+  }
+
+  for (let i = 0; i < 8; i++) {
+    await prisma.testimonial.create({
+      data: {
+        quote: faker.lorem.sentence(),
+        userId: faker.string.ulid(),
+        location: faker.location.city() + ", " + faker.location.state(),
+        rating: faker.number.int(5),
       },
     });
   }
