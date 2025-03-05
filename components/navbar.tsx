@@ -1,8 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { auth } from "@/auth";
+import UserDropdown from "./UserDropdown";
 
-export function Navbar({ loggedIn = false, userName = "" }: { loggedIn?: boolean; userName?: string }) {
+export async function Navbar() {
+  const session = await auth();
+  const user = session?.user;
+  const isLoggedIn = !!user;
+
   return (
     <header className="bg-primary w-full">
       <div className="container mx-auto flex items-center justify-between">
@@ -64,22 +68,8 @@ export function Navbar({ loggedIn = false, userName = "" }: { loggedIn?: boolean
         </nav>
 
         <div className="flex items-center">
-          {loggedIn ? (
-            <div className="flex items-center gap-2 px-4">
-              <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
-                <Image
-                  src="/placeholder.svg?height=40&width=40"
-                  alt="User profile"
-                  width={40}
-                  height={40}
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex items-center text-white">
-                <span>{userName}</span>
-                <ChevronDown className="h-4 w-4 ml-1" />
-              </div>
-            </div>
+          {isLoggedIn ? (
+            <UserDropdown user={user} />
           ) : (
             <Link href="/login" className="text-white px-4 py-6 hover:bg-primary-foreground/10 font-medium">
               INICIAR SESIÓN

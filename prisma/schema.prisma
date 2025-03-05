@@ -65,7 +65,7 @@ model GeriatricTherapy {
   id          String    @id @default(cuid())
   geriatricId String
   therapy     Therapy
-  geriatric   Geriatric @relation(references: [id], fields: [geriatricId])
+  geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
 
   @@unique([geriatricId, therapy])
 }
@@ -83,6 +83,7 @@ model Favorite {
   geriatricId String
   geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
   createdAt   DateTime  @default(now())
+  User        User      @relation(fields: [userId], references: [id])
 
   @@unique([userId, geriatricId])
 }
@@ -98,6 +99,7 @@ model SearchLog {
 model Review {
   id          String    @id @default(cuid())
   userId      String
+  user        User      @relation(fields: [userId], references: [id])
   geriatricId String
   geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
   rating      Float
@@ -110,6 +112,7 @@ model Review {
 
 model Testimonial {
   id        String   @id @default(cuid())
+  user      User?
   userId    String   @unique
   quote     String
   location  String
@@ -125,23 +128,21 @@ enum BlogStatus {
 }
 
 model BlogPost {
-  id         String @id @default(cuid())
+  id         String       @id @default(cuid())
   title      String
-  slug       String @unique
+  slug       String       @unique
   excerpt    String
   author     String
   authorRole String
   tags       String
   image      String
-  content    String @db.Text
-  readTime   Int    @default(1)
-
+  content    String       @db.Text
+  readTime   Int          @default(1)
   status     BlogStatus   @default(DRAFT)
   categoryId String
   category   BlogCategory @relation(fields: [categoryId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model BlogCategory {
@@ -151,4 +152,21 @@ model BlogCategory {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   posts     BlogPost[]
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String       @unique
+  password      String
+  emailVerified DateTime?
+  image         String?
+  isAdmin       Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  favorites     Favorite[]
+  avatar        String?
+  testimonial   Testimonial? @relation(fields: [testimonialId], references: [id])
+  testimonialId String?      @unique
+  Review        Review[]
 }

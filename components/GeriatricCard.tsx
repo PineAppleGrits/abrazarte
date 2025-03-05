@@ -11,11 +11,7 @@ interface GeriatricCardProps {
 }
 
 export default function GeriatricCard({ geriatric, handleAddToFavorites, favoritesMutation }: GeriatricCardProps) {
-
   const starRating = Math.round((geriatric.rating / 10) * 5);
-
-  const ratingLabel =
-    geriatric.rating >= 8 ? "Fabuloso" : geriatric.rating >= 7 ? "Muy bueno" : geriatric.rating >= 6 ? "Bueno" : "Regular";
 
   const mainImageSrc = geriatric.mainImage || "/placeholder.svg?height=200&width=300";
 
@@ -64,7 +60,7 @@ export default function GeriatricCard({ geriatric, handleAddToFavorites, favorit
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-bold">{geriatric.name}</h3>
-                  <div className="flex">
+                  <div className="flex ">
                     {[...Array(5)].map((_, index) =>
                       index < starRating ? (
                         <Star key={index} className="w-5 h-5 text-yellow-400" />
@@ -73,18 +69,12 @@ export default function GeriatricCard({ geriatric, handleAddToFavorites, favorit
                       )
                     )}
                   </div>
+                  <p className="text-sm text-gray-600">({geriatric.reviewCount})</p>
                 </div>
                 <p className="text-gray-600 flex items-center gap-1 mt-1">
                   <MapPin className="h-4 w-4" />
                   Ubicación: {geriatric.city}, {geriatric.province}
                 </p>
-              </div>
-
-              {/* Rating Badge */}
-              <div className="bg-gray-100 px-4 py-2 rounded-lg text-center">
-                <p className="text-lg font-bold">{ratingLabel}</p>
-                <p className="text-2xl font-bold bg-primary text-white rounded-full px-3 py-1">{geriatric.rating.toFixed(1)}</p>
-                <p className="text-sm text-gray-600">{geriatric.reviewCount} comentarios</p>
               </div>
             </div>
 

@@ -117,7 +117,7 @@ export default function QuienesSomos() {
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Nuestro Equipo</h2>
 
-          <div className="flex justify-center gap-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             {[
               {
                 name: "Pepe",

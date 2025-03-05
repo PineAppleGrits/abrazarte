@@ -8,7 +8,7 @@ export const fetchGeriatrics = async ({
   filters: SearchFilters;
   pageParam: number;
 }): Promise<SearchResult> => {
-  // Convert filters to URLSearchParams
+
   const params = new URLSearchParams();
 
   if (filters.searchQuery) params.append("searchQuery", filters.searchQuery);
@@ -39,7 +39,7 @@ export const fetchGeriatrics = async ({
   if (filters.province) params.append("province", filters.province);
   if (filters.country) params.append("country", filters.country);
 
-  // Add pagination parameters
+
   params.append("page", pageParam.toString());
   params.append("limit", "10"); // Number of results per page
 

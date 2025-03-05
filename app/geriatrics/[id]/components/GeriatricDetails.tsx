@@ -157,9 +157,9 @@ export function GeriatricDetails({ geriatric, initialIsFavorite = false }: Geria
               <Button className="w-full" size="lg">
                 <span>Contactar</span>
               </Button>
-              <Button variant="outline" className="w-full" size="lg">
+              {/* <Button variant="outline" className="w-full" size="lg">
                 Agendar Visita
-              </Button>
+              </Button> */}
             </div>
           </Card>
         </div>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
-        <main className="min-h-screen flex flex-col">
-          <Navbar loggedIn={true} userName="Laura R" />
-          {children}
-        </main>
+        <SessionProvider>
+          <main className="min-h-screen flex flex-col">
+            <Navbar />
+            {children}
+          </main>
+        </SessionProvider>
       </body>
     </html>
   );

@@ -26,7 +26,6 @@ export default function NewGeriatricPage() {
       router.refresh();
     } catch (error) {
       console.error("Error creating geriatric:", error);
-
     } finally {
       setIsLoading(false);
     }

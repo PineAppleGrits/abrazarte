@@ -22,7 +22,7 @@ export function parseTagsString(tagsString: string): string[] {
 
 
 export function calculateReadTime(content: string): number {
-  // Remove HTML tags (a simple replacement, consider using a robust library for production)
+
   const plainText = content.replace(/<[^>]+>/g, "");
   const wordCount = plainText.split(/\s+/).filter(Boolean).length;
   return Math.ceil(wordCount / 200);

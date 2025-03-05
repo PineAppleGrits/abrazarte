@@ -1,8 +1,24 @@
-import { PrismaClient, Therapy } from "@prisma/client";
+import { BlogStatus, PrismaClient, Therapy } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import slugify from "slugify";
 const prisma = new PrismaClient();
 async function main() {
+  // await createGeriatrics();
+  // await createTestimonials();
+  // return;
+  const categorias = {
+    bienestar: "Bienestar",
+    consejos: "Consejos",
+    residencias: "Residencias",
+    actividades: "Actividades",
+  };
+  for (const [slug, name] of Object.entries(categorias)) {
+    await prisma.blogCategory.upsert({
+      where: { slug },
+      update: {},
+      create: { name, slug },
+    });
+  }
   const blogPosts = [
     {
       id: 1,
@@ -200,9 +216,13 @@ async function main() {
         slug: post.category,
       },
     });
-    if (!category) continue;
-    await prisma.blogPost.create({
-      data: {
+    if (category == null) continue;
+    await prisma.blogPost.upsert({
+      where: {
+        id: String(id),
+        slug: slugify(post.title, { lower: true }),
+      },
+      update: {
         ...post,
         slug: slugify(post.title, { lower: true }),
         category: { connect: { id: category.id } },
@@ -210,6 +230,17 @@ async function main() {
         author: post.author || "Pepe",
         authorRole: post.authorRole || "Autor",
         content: post.content || "Contenido de ejemlo",
+        status: BlogStatus.PUBLISHED,
+      },
+      create: {
+        ...post,
+        slug: slugify(post.title, { lower: true }),
+        category: { connect: { id: category.id } },
+        tags: post.tags?.join(",") || "",
+        author: post.author || "Pepe",
+        authorRole: post.authorRole || "Autor",
+        content: post.content || "Contenido de ejemlo",
+        status: BlogStatus.PUBLISHED,
       },
     });
   }
@@ -226,7 +257,7 @@ main()
   });
 
 async function createGeriatrics() {
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 100; i++) {
     const reviews = faker.number.int(7);
     await prisma.geriatric.create({
       data: {
@@ -238,7 +269,6 @@ async function createGeriatrics() {
         description: faker.lorem.paragraph(),
         priceRangeMin: Number(faker.finance.amount({ min: 0, max: 10000 })),
         priceRangeMax: Number(faker.finance.amount({ min: 10000, max: 500000 })),
-
         hasDayCare: faker.datatype.boolean(),
         hasPermanentStay: faker.datatype.boolean(),
         hasPrivateRoom: faker.datatype.boolean(),
@@ -250,7 +280,6 @@ async function createGeriatrics() {
         hasAlzheimerCare: faker.datatype.boolean(),
         hasReducedMobility: faker.datatype.boolean(),
         has24hMedical: faker.datatype.boolean(),
-
         images: {
           createMany: {
             data: [1, 2, 3, 4].map(() => ({ url: faker.image.url() })),
@@ -259,9 +288,13 @@ async function createGeriatrics() {
 
         reviews: {
           createMany: {
-            data: Array(reviews)
+            data: Array(1)
               .fill(0)
-              .map(() => ({ rating: faker.number.int(10), userId: faker.string.ulid(), comment: faker.lorem.paragraph() })),
+              .map(() => ({
+                rating: faker.number.int(10),
+                userId: "cm7wfubdk0001hkh8d677tkrh",
+                comment: faker.lorem.paragraph(),
+              })),
           },
         },
         reviewCount: reviews,
