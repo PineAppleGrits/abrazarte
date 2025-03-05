@@ -1,9 +1,9 @@
 import { PrismaClient, Therapy } from "@prisma/client";
-import { faker, th } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 const prisma = new PrismaClient();
 async function main() {
-  for (const i of Array(100).keys()) {
-    let reviews = faker.number.int(7);
+  for (let i = 0; i < 100; i++) {
+    const reviews = faker.number.int(7);
     await prisma.geriatric.create({
       data: {
         country: "Argentina",
@@ -29,7 +29,7 @@ async function main() {
 
         images: {
           createMany: {
-            data: [1, 2, 3, 4].map((e) => ({ url: faker.image.url() })),
+            data: [1, 2, 3, 4].map(() => ({ url: faker.image.url() })),
           },
         },
 
@@ -37,7 +37,7 @@ async function main() {
           createMany: {
             data: Array(reviews)
               .fill(0)
-              .map((e) => ({ rating: faker.number.int(10), userId: faker.string.ulid(), comment: faker.lorem.paragraph() })),
+              .map(() => ({ rating: faker.number.int(10), userId: faker.string.ulid(), comment: faker.lorem.paragraph() })),
           },
         },
         reviewCount: reviews,

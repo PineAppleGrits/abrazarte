@@ -1,8 +1,8 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ChevronDown } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { ChevronDown } from "lucide-react";
 
-export function Navbar({ loggedIn = false, userName = "" }) {
+export function Navbar({ loggedIn = false, userName = "" }: { loggedIn?: boolean; userName?: string }) {
   return (
     <header className="bg-primary w-full">
       <div className="container mx-auto flex items-center justify-between">
@@ -88,6 +88,5 @@ export function Navbar({ loggedIn = false, userName = "" }) {
         </div>
       </div>
     </header>
-  )
+  );
 }
-

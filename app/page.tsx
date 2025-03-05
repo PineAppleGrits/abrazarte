@@ -1,13 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col">
-      <Navbar />
-
+    <>
       <div className="relative w-full h-[600px]">
         <Image src="/placeholder.svg?height=600&width=1200" alt="Elderly care" fill className="object-cover" priority />
 
@@ -103,7 +100,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-primary/10 p-8 rounded-lg">
-              <div className="text-5xl text-primary mb-4">"</div>
+              <div className="text-5xl text-primary mb-4">&quot;</div>
               <p className="text-gray-700 italic mb-6">
                 Con Find Care fue fácil comparar opciones y hablar con las residencias. Encontramos el lugar perfecto para mi
                 papá, ¡un alivio total!
@@ -135,7 +132,7 @@ export default function Home() {
             </div>
 
             <div className="bg-primary/10 p-8 rounded-lg">
-              <div className="text-5xl text-primary mb-4">"</div>
+              <div className="text-5xl text-primary mb-4">&quot;</div>
               <p className="text-gray-700 italic mb-6">
                 No sabíamos por dónde empezar para elegir una residencia. Find Care lo hizo simple, con asesoramiento en cada
                 paso. ¡Lo recomiendo!
@@ -167,7 +164,7 @@ export default function Home() {
             </div>
 
             <div className="bg-primary/10 p-8 rounded-lg">
-              <div className="text-5xl text-primary mb-4">"</div>
+              <div className="text-5xl text-primary mb-4">&quot;</div>
               <p className="text-gray-700 italic mb-6">
                 Pude ver opiniones y contactar directamente a las residencias. Ahora mi mamá está en un lugar increíble, ¡muy
                 buena experiencia!
@@ -283,6 +280,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </main>
+    </>
   );
 }
