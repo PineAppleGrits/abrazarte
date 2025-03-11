@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { MapPin, Clock, Star, Heart, Check, X, Info, Calendar, Bed, Bath, HeartPulse, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,12 +8,15 @@ import { Card } from "@/components/ui/card";
 import { Reviews } from "./Reviews";
 import { Map } from "./Map";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { Geriatric, GeriatricTherapy, Review } from "@prisma/client";
+import type { Geriatric, GeriatricTherapy, Image as ImageType, Review } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 interface GeriatricDetailsProps {
   geriatric: Geriatric & {
     therapies: GeriatricTherapy[];
     reviews: Review[];
+    images: ImageType[];
   };
   initialIsFavorite?: boolean;
 }
@@ -42,25 +45,10 @@ const FeatureItem = ({ isAvailable, label, description }: FeatureItemProps) => (
 );
 
 export function GeriatricDetails({ geriatric, initialIsFavorite = false }: GeriatricDetailsProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsFavorite(initialIsFavorite);
-  }, [initialIsFavorite]);
-
-  const toggleFavorite = async () => {
-    try {
-      setIsLoading(true);
-
-
-      setIsFavorite((prev) => !prev);
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const queryClient = useQueryClient();
+  const [isLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const therapyLabels: Record<string, string> = {
     KINESIOLOGY: "Kinesiología",
@@ -79,23 +67,64 @@ export function GeriatricDetails({ geriatric, initialIsFavorite = false }: Geria
     );
   }
 
+  const favoriteMutation = useMutation({
+    mutationFn: async (currentIsFavorite: boolean) => {
+      if (currentIsFavorite) {
+        const res = await fetch(`/api/favorite?geriatricId=${geriatric.id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to remove from favorites");
+        return res.json();
+      } else {
+        const { data } = await axios.post(`/api/favorite`, {
+          geriatricId: geriatric.id,
+        });
+        return data;
+      }
+    },
+    onSuccess: () => {
+      setIsFavorite((prevFav) => !prevFav);
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+  });
+
+  function toggleFavorite() {
+    favoriteMutation.mutate(isFavorite);
+  }
+
   return (
     <div className="container mx-auto py-8 px-4 max-w-7xl">
-      {/* Header Section */}
       <div className="flex flex-col lg:flex-row gap-8 mb-8">
-        {/* Image Section */}
         <div className="w-full lg:w-2/3">
-          {geriatric.mainImage ? (
-            <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg">
-              <Image src={geriatric.mainImage} alt={geriatric.name} fill className="object-cover" priority />
-            </div>
+          {geriatric.images && geriatric.images.length > 0 ? (
+            <>
+              <div className="w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
+                {geriatric.images.map((image, index) => (
+                  <div key={image.id} className={`relative w-full h-[400px] ${selectedIndex === index ? "block" : "hidden"}`}>
+                    <Image src={image.url} alt="Geriatric Image" fill className="object-cover" priority />
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 mt-4">
+                {geriatric.images.map((image, index) => (
+                  <div
+                    key={image.id}
+                    className={`relative h-[100px] rounded-lg overflow-hidden cursor-pointer flex-1 ${
+                      selectedIndex === index ? "ring-2 ring-blue-500" : ""
+                    }`}
+                    onClick={() => setSelectedIndex(index)}
+                  >
+                    <Image src={image.url} alt="Geriatric Image" fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
             <div className="h-[400px] bg-gray-200 rounded-lg flex items-center justify-center">
               <span className="text-gray-500">No image available</span>
             </div>
           )}
         </div>
-
         {/* Quick Info Card */}
         <div className="w-full lg:w-1/3">
           <Card className="p-6 shadow-lg">
