@@ -8,6 +8,7 @@ export default async function GeriatricPage({ params }: { params: { id: string }
     include: {
       therapies: true,
       reviews: true,
+      images: true
     },
   });
 
