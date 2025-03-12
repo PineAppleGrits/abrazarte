@@ -9,7 +9,8 @@
   --card-foreground: 240 10% 3.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 240 10% 3.9%;
-  --primary: 347 56% 69%;
+  /* --primary: 347 56% 69%; */
+  --primary: 357 43% 71%;
   --primary-foreground: 355.7 100% 97.3%;
   --secondary: 240 4.8% 95.9%;
   --secondary-foreground: 240 5.9% 10%;
@@ -26,7 +27,7 @@
 }
 
 .slider-range {
-  @apply relative h-2 ;
+  @apply relative h-2;
 }
 
 .slider-range .slider-track {
