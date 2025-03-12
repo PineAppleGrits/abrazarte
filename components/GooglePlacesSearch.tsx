@@ -19,18 +19,13 @@ interface GooglePlacesAutocompleteProps {
   placeholder?: string;
 }
 
-export function GooglePlacesSearch({
-  onPlaceSelect,
-  error,
-  placeholder = "Buscar dirección...",
-}: GooglePlacesAutocompleteProps) {
+export function GooglePlacesSearch({ onPlaceSelect, error, placeholder = "Buscar dirección..." }: GooglePlacesAutocompleteProps) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     libraries: ["places"],
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
-
 
   const [value, setValue] = useState("");
   const [isValid, setIsValid] = useState(false);
@@ -42,7 +37,6 @@ export function GooglePlacesSearch({
       componentRestrictions: { country: ["AR"] },
       fields: ["address_components", "geometry", "formatted_address"],
     });
-
 
     inputRef.current.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
@@ -71,7 +65,6 @@ export function GooglePlacesSearch({
         longitude: place.geometry.location?.lng() || 0,
       };
 
-
       setValue(place.formatted_address!);
 
       setIsValid(true);
@@ -85,16 +78,11 @@ export function GooglePlacesSearch({
     <Input
       ref={inputRef}
       type="text"
-
       value={value}
       onChange={(e) => {
-
-
         setValue(e.target.value);
         setIsValid(false);
       }}
-
-
       onBlur={() => {
         if (!isValid) {
           setValue("");
@@ -103,7 +91,6 @@ export function GooglePlacesSearch({
       placeholder={placeholder}
       className="w-full"
       error={error}
-
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           e.preventDefault();

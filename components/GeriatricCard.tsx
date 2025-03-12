@@ -1,22 +1,53 @@
+"use client";
+import { useState } from "react";
 import { GeriatricSearchResult } from "@/types/common";
 import { Heart, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 interface GeriatricCardProps {
   geriatric: GeriatricSearchResult;
-  handleAddToFavorites: (id: string) => void;
-  favoritesMutation: { isPending: boolean };
+  initialIsFavorite: boolean;
 }
 
-export default function GeriatricCard({ geriatric, handleAddToFavorites, favoritesMutation }: GeriatricCardProps) {
+export default function GeriatricCard({ geriatric, initialIsFavorite = false }: GeriatricCardProps) {
+  const queryClient = useQueryClient();
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const starRating = Math.round((geriatric.rating / 10) * 5);
 
   const mainImageSrc = geriatric.mainImage || "/placeholder.svg?height=200&width=300";
 
   const images = geriatric.images.slice(0, 4);
-  const mainImage = images.shift()! || mainImageSrc;
+  const mainImage = images.shift() || mainImageSrc;
+
+  const favoriteMutation = useMutation({
+    mutationFn: async (currentIsFavorite: boolean) => {
+      if (currentIsFavorite) {
+        const res = await fetch(`/api/favorite?geriatricId=${geriatric.id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to remove from favorites");
+        return res.json();
+      } else {
+        const { data } = await axios.post(`/api/favorite`, {
+          geriatricId: geriatric.id,
+        });
+        return data;
+      }
+    },
+    onSuccess: () => {
+      setIsFavorite((prevFav) => !prevFav);
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+  });
+
+  function toggleFavorite() {
+    favoriteMutation.mutate(isFavorite);
+  }
+
   return (
     <div key={geriatric.id} className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
       <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -123,11 +154,20 @@ export default function GeriatricCard({ geriatric, handleAddToFavorites, favorit
                 variant="outline"
                 size="sm"
                 className="flex items-center gap-1"
-                onClick={() => handleAddToFavorites(geriatric.id)}
-                disabled={favoritesMutation.isPending}
+                onClick={toggleFavorite}
+                disabled={favoriteMutation.isPending}
               >
-                <Heart className="h-4 w-4" />
-                <span>Guardar en favoritos</span>
+                {isFavorite ? (
+                  <>
+                    <Heart className="h-4 w-4 text-red-500" />
+                    <span>Quitar de favoritos</span>
+                  </>
+                ) : (
+                  <>
+                    <Heart className="h-4 w-4" />
+                    <span>Guardar en favoritos</span>
+                  </>
+                )}
               </Button>
               <Link href={`/geriatrics/${geriatric.id}`}>
                 <Button size="sm">Ver más</Button>
