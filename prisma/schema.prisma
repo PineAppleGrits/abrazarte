@@ -14,26 +14,34 @@ datasource db {
 }
 
 model Geriatric {
-  id                 String  @id @default(cuid())
-  name               String
-  description        String
-  images             Image[]
-  rating             Float   @default(0)
-  reviewCount        Int     @default(0)
-  priceRangeMin      Float?
-  priceRangeMax      Float?
-  hasDayCare         Boolean @default(false)
-  hasPermanentStay   Boolean @default(false)
-  hasPrivateRoom     Boolean @default(false)
-  hasSharedRoom      Boolean @default(false)
-  hasPrivateBath     Boolean @default(false)
-  hasSharedBath      Boolean @default(false)
-  hasBasicCare       Boolean @default(false)
-  hasSpecializedCare Boolean @default(false)
-  hasAlzheimerCare   Boolean @default(false)
-  hasReducedMobility Boolean @default(false)
-  has24hMedical      Boolean @default(false)
-  mainImage          String?
+  id                                  String   @id @default(cuid())
+  name                                String
+  description                         String
+  images                              Image[]
+  rating                              Float    @default(0)
+  reviewCount                         Int      @default(0)
+  priceRangeMin                       Float?
+  priceRangeMax                       Float?
+  // Estadia
+  hasDayCare                          Boolean? 
+  hasPermanentStay                    Boolean? 
+  // Habitacion
+  hasPrivateRoom                      Boolean? 
+  hasSharedRoom                       Boolean? 
+  // Grado
+  hasIndependentCare                  Boolean? 
+  hasSemiDependent                    Boolean? 
+  hasDependent                        Boolean? 
+  hasHighComplexity                   Boolean? 
+  // Tipo de cuidad
+  has24hMedical                       Boolean? 
+  has24hNursing                       Boolean? 
+  hasPresentialDoctor                 Boolean? 
+  hasKinesiology                      Boolean? 
+  hasMedicationSupply                 Boolean? 
+  hasAttentionForNeurologicalDiseases Boolean? 
+
+  mainImage String?
 
   country      String
   city         String
@@ -46,9 +54,7 @@ model Geriatric {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relations
-  therapies GeriatricTherapy[]
+  
   favorites Favorite[]
   reviews   Review[]
 }
@@ -59,22 +65,6 @@ model Image {
   geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
   url         String
   createdAt   DateTime  @default(now())
-}
-
-model GeriatricTherapy {
-  id          String    @id @default(cuid())
-  geriatricId String
-  therapy     Therapy
-  geriatric   Geriatric @relation(fields: [geriatricId], references: [id])
-
-  @@unique([geriatricId, therapy])
-}
-
-enum Therapy {
-  KINESIOLOGY
-  OCCUPATIONAL
-  PSYCHOLOGICAL
-  NUTRITIONIST
 }
 
 model Favorite {

@@ -1,49 +1,47 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SearchFilters } from "@/types/common";
+import type { SearchFilters } from "@/types/common";
 
 export const useSearchFilters = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState<SearchFilters>({
+  const initialFilters: SearchFilters = {
     searchQuery: searchParams.get("q") || "",
+    rating: searchParams.get("rating") ? parseInt(searchParams.get("rating") as string, 10) : 0,
     stayType: {
       dayCare: searchParams.get("hasDayCare") === "true",
       permanentStay: searchParams.get("hasPermanentStay") === "true",
     },
     roomType: {
       private: searchParams.get("hasPrivateRoom") === "true",
+      double: searchParams.get("hasDoubleRoom") === "true",
       shared: searchParams.get("hasSharedRoom") === "true",
-      indifferent: !searchParams.get("hasPrivateRoom") && !searchParams.get("hasSharedRoom"),
+      indifferent:
+        !searchParams.get("hasPrivateRoom") && !searchParams.get("hasDoubleRoom") && !searchParams.get("hasSharedRoom"),
     },
-    bathType: {
-      private: searchParams.get("hasPrivateBath") === "true",
-      shared: searchParams.get("hasSharedBath") === "true",
-      indifferent: !searchParams.get("hasPrivateBath") && !searchParams.get("hasSharedBath"),
+    dependency: {
+      independent: searchParams.get("hasIndependentCare") === "true",
+      semiDependent: searchParams.get("hasSemiDependent") === "true",
+      dependent: searchParams.get("hasDependent") === "true",
+      highComplexity: searchParams.get("hasHighComplexity") === "true",
     },
-    medicalCare: {
-      basic: searchParams.get("hasBasicCare") === "true",
-      specialized: searchParams.get("hasSpecializedCare") === "true",
-      alzheimer: searchParams.get("hasAlzheimerCare") === "true",
-      reducedMobility: searchParams.get("hasReducedMobility") === "true",
-      medical24h: searchParams.get("has24hMedical") === "true",
-    },
-    therapies: {
-      kinesiology: searchParams.getAll("therapies").includes("kinesiology"),
-      occupational: searchParams.getAll("therapies").includes("occupational"),
-      psychological: searchParams.getAll("therapies").includes("psychological"),
-      nutritionist: searchParams.getAll("therapies").includes("nutritionist"),
+    medical: {
+      nursing24: searchParams.get("has24hMedical") === "true",
+      presentialDoctor: searchParams.get("hasPresentialDoctor") === "true",
+      neurological: searchParams.get("hasAttentionForNeurologicalDiseases") === "true",
+      medication: searchParams.get("hasMedicationSupply") === "true",
     },
     priceRange: {
-      min: searchParams.get("priceRangeMin") ? parseInt(searchParams.get("priceRangeMin") as string) : 0,
-      max: searchParams.get("priceRangeMax") ? parseInt(searchParams.get("priceRangeMax") as string) : 500000,
+      min: searchParams.get("priceRangeMin") ? parseInt(searchParams.get("priceRangeMin") as string, 10) : 0,
+      max: searchParams.get("priceRangeMax") ? parseInt(searchParams.get("priceRangeMax") as string, 10) : 10000000,
     },
     city: searchParams.get("city") || undefined,
     province: searchParams.get("province") || undefined,
     country: searchParams.get("country") || undefined,
-  });
+  };
 
+  const [filters, setFilters] = useState<SearchFilters>(initialFilters);
   const [tempPriceRange, setTempPriceRange] = useState({
     min: filters.priceRange.min,
     max: filters.priceRange.max,
@@ -53,25 +51,23 @@ export const useSearchFilters = () => {
     const params = new URLSearchParams();
 
     if (filters.searchQuery) params.append("q", filters.searchQuery);
+    if (filters.rating) params.append("rating", filters.rating.toString());
     if (filters.stayType.dayCare) params.append("hasDayCare", "true");
     if (filters.stayType.permanentStay) params.append("hasPermanentStay", "true");
 
     if (filters.roomType.private) params.append("hasPrivateRoom", "true");
+    if (filters.roomType.double) params.append("hasDoubleRoom", "true");
     if (filters.roomType.shared) params.append("hasSharedRoom", "true");
 
-    if (filters.bathType.private) params.append("hasPrivateBath", "true");
-    if (filters.bathType.shared) params.append("hasSharedBath", "true");
+    if (filters.dependency.independent) params.append("hasIndependentCare", "true");
+    if (filters.dependency.semiDependent) params.append("hasSemiDependent", "true");
+    if (filters.dependency.dependent) params.append("hasDependent", "true");
+    if (filters.dependency.highComplexity) params.append("hasHighComplexity", "true");
 
-    if (filters.medicalCare.basic) params.append("hasBasicCare", "true");
-    if (filters.medicalCare.specialized) params.append("hasSpecializedCare", "true");
-    if (filters.medicalCare.alzheimer) params.append("hasAlzheimerCare", "true");
-    if (filters.medicalCare.reducedMobility) params.append("hasReducedMobility", "true");
-    if (filters.medicalCare.medical24h) params.append("has24hMedical", "true");
-
-    if (filters.therapies.kinesiology) params.append("therapies", "kinesiology");
-    if (filters.therapies.occupational) params.append("therapies", "occupational");
-    if (filters.therapies.psychological) params.append("therapies", "psychological");
-    if (filters.therapies.nutritionist) params.append("therapies", "nutritionist");
+    if (filters.medical.nursing24) params.append("has24hMedical", "true");
+    if (filters.medical.presentialDoctor) params.append("hasPresentialDoctor", "true");
+    if (filters.medical.neurological) params.append("hasAttentionForNeurologicalDiseases", "true");
+    if (filters.medical.medication) params.append("hasMedicationSupply", "true");
 
     params.append("priceRangeMin", filters.priceRange.min.toString());
     params.append("priceRangeMax", filters.priceRange.max.toString());
@@ -85,30 +81,28 @@ export const useSearchFilters = () => {
 
   const resetFilters = () => {
     setFilters({
+      rating: 0,
       searchQuery: "",
       stayType: { dayCare: false, permanentStay: false },
-      roomType: { private: false, shared: false, indifferent: true },
-      bathType: { private: false, shared: false, indifferent: true },
-      medicalCare: {
-        basic: false,
-        specialized: false,
-        alzheimer: false,
-        reducedMobility: false,
-        medical24h: false,
+      roomType: { private: false, double: false, shared: false, indifferent: true },
+      dependency: {
+        independent: false,
+        semiDependent: false,
+        dependent: false,
+        highComplexity: false,
       },
-      therapies: {
-        kinesiology: false,
-        occupational: false,
-        psychological: false,
-        nutritionist: false,
+      medical: {
+        nursing24: false,
+        presentialDoctor: false,
+        neurological: false,
+        medication: false,
       },
-      priceRange: { min: 0, max: 500000 },
+      priceRange: { min: 0, max: 10000000 },
       city: undefined,
       province: undefined,
       country: undefined,
     });
-    setTempPriceRange({ min: 0, max: 500000 });
-
+    setTempPriceRange({ min: 0, max: 10000000 });
     router.push("/buscar-geriatrico");
   };
 

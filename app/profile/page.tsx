@@ -35,7 +35,6 @@ export default async function Page() {
             include: {
               images: true,
               reviews: true,
-              therapies: true,
             },
           },
         },
@@ -100,7 +99,6 @@ export default async function Page() {
                   geriatric={{
                     ...geriatric,
                     images: geriatric.images.map((e) => e.url),
-                    therapies: geriatric.therapies.map((therapy) => therapy.therapy),
                   }}
                   key={geriatric.id}
                 />

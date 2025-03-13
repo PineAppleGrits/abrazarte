@@ -268,7 +268,7 @@ async function createGeriatrics() {
         name: faker.company.name(),
         description: faker.lorem.paragraph(),
         priceRangeMin: Number(faker.finance.amount({ min: 0, max: 10000 })),
-        priceRangeMax: Number(faker.finance.amount({ min: 10000, max: 500000 })),
+        priceRangeMax: Number(faker.finance.amount({ min: 10000, max: 10000000 })),
         hasDayCare: faker.datatype.boolean(),
         hasPermanentStay: faker.datatype.boolean(),
         hasPrivateRoom: faker.datatype.boolean(),
@@ -298,11 +298,11 @@ async function createGeriatrics() {
           },
         },
         reviewCount: reviews,
-        therapies: {
-          create: {
-            therapy: faker.helpers.enumValue(Therapy),
-          },
-        },
+        // therapies: {
+        //   create: {
+        //     therapy: faker.helpers.enumValue(Therapy),
+        //   },
+        // },
 
         latitude: Number(faker.location.latitude()),
         longitude: Number(faker.location.longitude()),

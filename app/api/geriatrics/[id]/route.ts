@@ -5,9 +5,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
   try {
     const geriatric = await prisma.geriatric.findUnique({
       where: { id: params.id },
-      include: {
-        therapies: true,
-      },
     });
 
     if (!geriatric) {
@@ -24,21 +21,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     const data = await request.json();
-    const { therapies, ...geriatricData } = data;
-
-    await prisma.geriatricTherapy.deleteMany({
-      where: { geriatricId: params.id },
-    });
 
     const geriatric = await prisma.geriatric.update({
       where: { id: params.id },
       data: {
-        ...geriatricData,
-        therapies: {
-          create: therapies.map((therapy: string) => ({
-            therapy,
-          })),
-        },
+        ...data,
       },
     });
 

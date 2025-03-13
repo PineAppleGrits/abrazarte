@@ -3,34 +3,35 @@ import axios from "axios";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Therapy } from "@prisma/client";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { GooglePlacesAutocomplete, Place } from "../GooglePlacesAutocomplete";
 import type { GeriatricFormData } from "./types";
 import { Card } from "../ui/card";
 import ImageUploader from "../CloudinaryImageUploader";
+import TriStateCheckbox from "./TriStateCheckbox";
 
 const geriatricSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
-  description: z.string().min(1, "La descripcion es requerida"),
-  priceRangeMin: z.number({ message: "Ingrese un valor valido" }).min(0, "El precio mínimo debe ser mayor a 0"),
-  priceRangeMax: z.number({ message: "Ingrese un valor valido" }).min(0, "El precio máximo debe ser mayor a 0"),
-  hasDayCare: z.boolean(),
-  hasPermanentStay: z.boolean(),
-  hasPrivateRoom: z.boolean(),
-  hasSharedRoom: z.boolean(),
-  hasPrivateBath: z.boolean(),
-  hasSharedBath: z.boolean(),
-  hasBasicCare: z.boolean(),
-  hasSpecializedCare: z.boolean(),
-  hasAlzheimerCare: z.boolean(),
-  hasReducedMobility: z.boolean(),
-  has24hMedical: z.boolean(),
+  description: z.string().min(1, "La descripción es requerida"),
+  priceRangeMin: z.number({ message: "Ingrese un valor válido" }).min(0, "El precio mínimo debe ser mayor a 0"),
+  priceRangeMax: z.number({ message: "Ingrese un valor válido" }).min(0, "El precio máximo debe ser mayor a 0"),
+  hasDayCare: z.boolean().nullable(),
+  hasPermanentStay: z.boolean().nullable(),
+  hasPrivateRoom: z.boolean().nullable(),
+  hasSharedRoom: z.boolean().nullable(),
+  hasIndependentCare: z.boolean().nullable(),
+  hasSemiDependent: z.boolean().nullable(),
+  hasDependent: z.boolean().nullable(),
+  hasHighComplexity: z.boolean().nullable(),
+  has24hMedical: z.boolean().nullable(),
+  has24hNursing: z.boolean().nullable(),
+  hasPresentialDoctor: z.boolean().nullable(),
+  hasKinesiology: z.boolean().nullable(),
+  hasMedicationSupply: z.boolean().nullable(),
+  hasAttentionForNeurologicalDiseases: z.boolean().nullable(),
   mainImage: z.string().optional(),
-  therapies: z.array(z.nativeEnum(Therapy)),
-  address: z.string({ message: "Ingrese una direccion valida" }).min(1, "Ingrese una direccion valida"),
+  address: z.string({ message: "Ingrese una dirección válida" }).min(1, "Ingrese una dirección válida"),
   street: z.string(),
   streetNumber: z.string(),
   city: z.string(),
@@ -38,7 +39,6 @@ const geriatricSchema = z.object({
   country: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-
   images: z
     .array(
       z.object({
@@ -53,30 +53,28 @@ export type GeriatricFormWithImages = z.infer<typeof geriatricSchema>;
 
 interface GeriatricFormProps {
   initialData?: GeriatricFormData;
-
-  onSubmit: (
-    data: Omit<GeriatricFormWithImages, "images"> & {
-      imageUrls: string[];
-    }
-  ) => Promise<void>;
+  onSubmit: (data: Omit<GeriatricFormWithImages, "images"> & { imageUrls: string[] }) => Promise<void>;
   isLoading?: boolean;
 }
+
 export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFormProps) {
   const methods = useForm<GeriatricFormWithImages>({
     resolver: zodResolver(geriatricSchema),
     defaultValues: initialData || {
-      therapies: [],
-      hasDayCare: false,
-      hasPermanentStay: false,
-      hasPrivateRoom: false,
-      hasSharedRoom: false,
-      hasPrivateBath: false,
-      hasSharedBath: false,
-      hasBasicCare: false,
-      hasSpecializedCare: false,
-      hasAlzheimerCare: false,
-      hasReducedMobility: false,
-      has24hMedical: false,
+      hasDayCare: null,
+      hasPermanentStay: null,
+      hasPrivateRoom: null,
+      hasSharedRoom: null,
+      hasIndependentCare: null,
+      hasSemiDependent: null,
+      hasDependent: null,
+      hasHighComplexity: null,
+      has24hMedical: null,
+      has24hNursing: null,
+      hasPresentialDoctor: null,
+      hasKinesiology: null,
+      hasMedicationSupply: null,
+      hasAttentionForNeurologicalDiseases: null,
       images: [],
     },
   });
@@ -84,7 +82,6 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = methods;
 
@@ -138,6 +135,7 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
       imageUrls = await uploadImagesToCloudinary(data.images);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { images, ...formData } = data;
     await onSubmit({ ...formData, imageUrls });
   };
@@ -149,8 +147,7 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
           <h2 className="text-xl font-semibold mb-4">Información Básica</h2>
           <div className="space-y-4">
             <Input {...register("name")} placeholder="Nombre de la Residencia" error={errors.name?.message} />
-            <Input {...register("description")} placeholder="Descripcion de la Residencia" error={errors.description?.message} />
-
+            <Input {...register("description")} placeholder="Descripción de la Residencia" error={errors.description?.message} />
             <div className="grid grid-cols-2 gap-4">
               <Input
                 {...register("priceRangeMin", { valueAsNumber: true })}
@@ -178,27 +175,41 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
           <h2 className="text-xl font-semibold mb-4">Servicios de Estadía</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-700">Tipo de Estadía</h3>
-              <div className="space-y-2">
-                <Checkbox {...register("hasDayCare")} label="Centro de Día" error={errors.hasDayCare?.message} />
-                <Checkbox {...register("hasPermanentStay")} label="Estadía Permanente" error={errors.hasPermanentStay?.message} />
-              </div>
+              <TriStateCheckbox register={register} name="hasDayCare" label="Centro de Día" error={errors.hasDayCare} />
+              <TriStateCheckbox
+                register={register}
+                name="hasPermanentStay"
+                label="Estadía Permanente"
+                error={errors.hasPermanentStay}
+              />
             </div>
-
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-700">Tipo de Habitación</h3>
-              <div className="space-y-2">
-                <Checkbox {...register("hasPrivateRoom")} label="Habitación Privada" error={errors.hasPrivateRoom?.message} />
-                <Checkbox {...register("hasSharedRoom")} label="Habitación Compartida" error={errors.hasSharedRoom?.message} />
-              </div>
+              <TriStateCheckbox
+                register={register}
+                name="hasPrivateRoom"
+                label="Habitación Privada"
+                error={errors.hasPrivateRoom}
+              />
+              <TriStateCheckbox
+                register={register}
+                name="hasSharedRoom"
+                label="Habitación Compartida"
+                error={errors.hasSharedRoom}
+              />
             </div>
+          </div>
+        </Card>
 
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Nivel de Dependencia</h2>
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-700">Tipo de Baño</h3>
-              <div className="space-y-2">
-                <Checkbox {...register("hasPrivateBath")} label="Baño Privado" error={errors.hasPrivateBath?.message} />
-                <Checkbox {...register("hasSharedBath")} label="Baño Compartido" error={errors.hasSharedBath?.message} />
-              </div>
+              <TriStateCheckbox {...register("hasIndependentCare")} label="Independiente" error={errors.hasIndependentCare} />
+              <TriStateCheckbox {...register("hasSemiDependent")} label="Semi-dependiente" error={errors.hasSemiDependent} />
+            </div>
+            <div className="space-y-4">
+              <TriStateCheckbox {...register("hasDependent")} label="Dependiente" error={errors.hasDependent} />
+              <TriStateCheckbox {...register("hasHighComplexity")} label="Alta Complejidad" error={errors.hasHighComplexity} />
             </div>
           </div>
         </Card>
@@ -207,52 +218,30 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
           <h2 className="text-xl font-semibold mb-4">Servicios Médicos</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h3 className="font-medium text-gray-700">Cuidados Básicos</h3>
-              <div className="space-y-2">
-                <Checkbox {...register("hasBasicCare")} label="Cuidados Básicos" error={errors.hasBasicCare?.message} />
-                <Checkbox
-                  {...register("hasSpecializedCare")}
-                  label="Cuidados Especializados"
-                  error={errors.hasSpecializedCare?.message}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="font-medium text-gray-700">Cuidados Especiales</h3>
-              <div className="space-y-2">
-                <Checkbox {...register("hasAlzheimerCare")} label="Cuidados Alzheimer" error={errors.hasAlzheimerCare?.message} />
-                <Checkbox
-                  {...register("hasReducedMobility")}
-                  label="Movilidad Reducida"
-                  error={errors.hasReducedMobility?.message}
-                />
-                <Checkbox {...register("has24hMedical")} label="Atención Médica 24hs" error={errors.has24hMedical?.message} />
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Terapias</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {Object.values(Therapy).map((therapy) => (
-              <Checkbox
-                key={therapy}
-                value={therapy}
-                checked={watch("therapies").includes(therapy)}
-                onCheckedChange={(checked) => {
-                  const currentTherapies = watch("therapies");
-                  setValue("therapies", checked ? [...currentTherapies, therapy] : currentTherapies.filter((t) => t !== therapy));
-                }}
-                label={getTherapyLabel(therapy)}
-                error={errors.therapies?.message}
+              <TriStateCheckbox {...register("has24hMedical")} label="Atención Médica 24hs" error={errors.has24hMedical} />
+              <TriStateCheckbox {...register("has24hNursing")} label="Enfermería 24hs" error={errors.has24hNursing} />
+              <TriStateCheckbox
+                {...register("hasPresentialDoctor")}
+                label="Doctor Presencial"
+                error={errors.hasPresentialDoctor}
               />
-            ))}
+            </div>
+            <div className="space-y-4">
+              <TriStateCheckbox {...register("hasKinesiology")} label="Kinesiología" error={errors.hasKinesiology} />
+              <TriStateCheckbox
+                {...register("hasMedicationSupply")}
+                label="Suministro de Medicamentos"
+                error={errors.hasMedicationSupply}
+              />
+              <TriStateCheckbox
+                {...register("hasAttentionForNeurologicalDiseases")}
+                label="Atención para Enfermedades Neurológicas"
+                error={errors.hasAttentionForNeurologicalDiseases}
+              />
+            </div>
           </div>
         </Card>
 
-        {/* Field Array for Images */}
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Imágenes</h2>
           <ImageUploader />
@@ -266,14 +255,4 @@ export function GeriatricForm({ initialData, onSubmit, isLoading }: GeriatricFor
       </form>
     </FormProvider>
   );
-}
-
-function getTherapyLabel(therapy: Therapy): string {
-  const labels: Record<Therapy, string> = {
-    KINESIOLOGY: "Kinesiología",
-    OCCUPATIONAL: "Terapia Ocupacional",
-    PSYCHOLOGICAL: "Psicología",
-    NUTRITIONIST: "Nutrición",
-  };
-  return labels[therapy];
 }

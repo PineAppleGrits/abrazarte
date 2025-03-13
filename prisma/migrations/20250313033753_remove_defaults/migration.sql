@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE "Geriatric" ALTER COLUMN "hasDayCare" DROP DEFAULT,
+ALTER COLUMN "hasPermanentStay" DROP DEFAULT,
+ALTER COLUMN "hasPrivateRoom" DROP DEFAULT,
+ALTER COLUMN "hasSharedRoom" DROP DEFAULT,
+ALTER COLUMN "has24hMedical" DROP DEFAULT,
+ALTER COLUMN "has24hNursing" DROP DEFAULT,
+ALTER COLUMN "hasAttentionForNeurologicalDiseases" DROP DEFAULT,
+ALTER COLUMN "hasDependent" DROP DEFAULT,
+ALTER COLUMN "hasHighComplexity" DROP DEFAULT,
+ALTER COLUMN "hasIndependentCare" DROP DEFAULT,
+ALTER COLUMN "hasKinesiology" DROP DEFAULT,
+ALTER COLUMN "hasMedicationSupply" DROP DEFAULT,
+ALTER COLUMN "hasPresentialDoctor" DROP DEFAULT,
+ALTER COLUMN "hasSemiDependent" DROP DEFAULT;

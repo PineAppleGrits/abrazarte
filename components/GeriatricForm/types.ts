@@ -1,4 +1,3 @@
-import { Therapy } from "@prisma/client";
 
 export type GeriatricFormData = {
   name: string;
@@ -17,7 +16,6 @@ export type GeriatricFormData = {
   hasReducedMobility: boolean;
   has24hMedical: boolean;
   mainImage?: string;
-  therapies: Therapy[];
   address: string;
   street: string;
   streetNumber: string;
