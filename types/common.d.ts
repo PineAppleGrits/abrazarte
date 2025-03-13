@@ -1,5 +1,17 @@
-import { BlogCategory, Geriatric } from "@prisma/client";
-import { BlogPost as PrismBlogPost } from "@prisma/client";
+import { BlogCategory, type Geriatric } from "@prisma/client";
+import type { BlogPost as PrismBlogPost } from "@prisma/client";
+
+export type Place = {
+  address: string;
+  street: string;
+  streetNumber: string;
+  city: string;
+  province: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+};
+
 export type SearchFilters = {
   searchQuery: string;
   rating: number; // max 10
@@ -29,9 +41,7 @@ export type SearchFilters = {
     min: number;
     max: number;
   };
-  country?: string;
-  city?: string;
-  province?: string;
+  locations: Place[];
 };
 
 export type SearchResult = {

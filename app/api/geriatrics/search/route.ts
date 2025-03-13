@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma";
-import { Geriatric, Image, Prisma, Review } from "@prisma/client";
-import { SearchResult } from "@/types/common";
+import { type Geriatric, type Image, Prisma, type Review } from "@prisma/client";
+import type { SearchResult } from "@/types/common";
 
 // The route will be cached for 5 minutes (300 seconds)
 export const revalidate = 300;
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
 
     const searchQuery = searchParams.get("searchQuery") || "";
-    const rating = parseInt(searchParams.get("rating") || "0");
+    const rating = Number.parseInt(searchParams.get("rating") || "0");
 
     const query = {
       hasDayCare: searchParams.get("hasDayCare") === "true",
@@ -33,18 +33,104 @@ export async function GET(request: NextRequest) {
     };
 
     const priceRangeMin = searchParams.get("priceRangeMin")
-      ? parseInt(searchParams.get("priceRangeMin") as string, 10)
+      ? Number.parseInt(searchParams.get("priceRangeMin") as string, 10)
       : undefined;
     const priceRangeMax = searchParams.get("priceRangeMax")
-      ? parseInt(searchParams.get("priceRangeMax") as string, 10)
+      ? Number.parseInt(searchParams.get("priceRangeMax") as string, 10)
       : undefined;
 
-    const country = searchParams.get("country") || "";
-    const city = searchParams.get("city") || "";
-    const province = searchParams.get("province") || "";
+    // Handle multiple locations
+    const locationConditions: Prisma.GeriatricWhereInput[] = [];
 
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 15);
+    // Check for multiple locations (city0, city1, etc.)
+    let index = 0;
+    while (searchParams.has(`city${index}`)) {
+      const city = searchParams.get(`city${index}`) || "";
+      const province = searchParams.get(`province${index}`) || "";
+      const country = searchParams.get(`country${index}`) || "";
+
+      if (city || province || country) {
+        const locationCondition: Prisma.GeriatricWhereInput = { OR: [] };
+
+        if (city) {
+          locationCondition.OR?.push({
+            city: {
+              contains: city,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (province) {
+          locationCondition.OR?.push({
+            province: {
+              contains: province,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (country) {
+          locationCondition.OR?.push({
+            country: {
+              contains: country,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (locationCondition.OR?.length) {
+          locationConditions.push(locationCondition);
+        }
+      }
+
+      index++;
+    }
+
+    // Also check for single location for backward compatibility
+    if (locationConditions.length === 0) {
+      const city = searchParams.get("city") || "";
+      const province = searchParams.get("province") || "";
+      const country = searchParams.get("country") || "";
+
+      if (city || province || country) {
+        const locationCondition: Prisma.GeriatricWhereInput = { OR: [] };
+
+        if (city) {
+          locationCondition.OR?.push({
+            city: {
+              contains: city,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (province) {
+          locationCondition.OR?.push({
+            province: {
+              contains: province,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (country) {
+          locationCondition.OR?.push({
+            country: {
+              contains: country,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          });
+        }
+
+        if (locationCondition.OR?.length) {
+          locationConditions.push(locationCondition);
+        }
+      }
+    }
+
+    const page = Number.parseInt(searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(searchParams.get("limit") || "10", 15);
     const skip = (page - 1) * limit;
 
     const conditions: Prisma.GeriatricWhereInput[] = Object.entries(query).flatMap(([key, value]) =>
@@ -74,28 +160,10 @@ export async function GET(request: NextRequest) {
       ],
     });
 
-    if (country) {
+    // Add location conditions if any
+    if (locationConditions.length > 0) {
       conditions.push({
-        country: {
-          contains: country,
-          mode: Prisma.QueryMode.insensitive,
-        },
-      });
-    }
-    if (city) {
-      conditions.push({
-        city: {
-          contains: city,
-          mode: Prisma.QueryMode.insensitive,
-        },
-      });
-    }
-    if (province) {
-      conditions.push({
-        province: {
-          contains: province,
-          mode: Prisma.QueryMode.insensitive,
-        },
+        OR: locationConditions,
       });
     }
 

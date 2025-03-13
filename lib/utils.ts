@@ -1,29 +1,23 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export function formatDate(date?: Date): string {
-  return new Intl.DateTimeFormat("es-ES", {
+export function formatDate(date: Date = new Date()): string {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
     month: "long",
     day: "numeric",
-    year: "numeric",
-  }).format(date ?? new Date());
+  };
+  return date.toLocaleDateString("es-AR", options);
 }
 
-export function parseTagsString(tagsString: string): string[] {
-  return tagsString
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
+export function calculateReadTime(text: string): number {
+  const wordsPerMinute = 200;
+  const numberOfWords = text.split(/\s/g).length;
+  const minutes = numberOfWords / wordsPerMinute;
+  return Math.ceil(minutes);
 }
 
+export function parseTagsString(tags: string): string[] {
+  return tags.split(",").map((tag) => tag.trim());
+}
 
-export function calculateReadTime(content: string): number {
-
-  const plainText = content.replace(/<[^>]+>/g, "");
-  const wordCount = plainText.split(/\s+/).filter(Boolean).length;
-  return Math.ceil(wordCount / 200);
+export function cn(...inputs: (string | undefined | null)[]): string {
+  return inputs.filter(Boolean).join(" ");
 }
