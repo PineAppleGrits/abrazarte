@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { SessionProvider } from "next-auth/react";
 import QueryProvider from "./providers";
+import Footer from "@/components/footer";
 
 const inter = Poppins({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
             <main className="min-h-screen flex flex-col">
               <Navbar />
               {children}
+              <Footer />
             </main>
           </SessionProvider>
         </QueryProvider>
