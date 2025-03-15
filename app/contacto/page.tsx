@@ -1,11 +1,14 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 export default function Contacto() {
+  const router = useRouter();
   return (
     <>
       <section className="py-16">
@@ -40,7 +43,13 @@ export default function Contacto() {
               </div>
             </div>
             <div>
-              <form className="space-y-6">
+              <form
+                className="space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  router.push("/gracias");
+                }}
+              >
                 <div className="space-y-2">
                   <Label htmlFor="nombre">Nombre</Label>
                   <Input id="nombre" placeholder="Tu nombre" required />
