@@ -37,7 +37,7 @@ export default function Home() {
       {/* How it Works Section */}
       <section className="py-16 bg-gradient-to-b from-white to-brand-3/30">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-4xl font-bold text-center mb-4">¿Cómo funciona Find Care?</h2>
+          <h2 className="text-4xl font-bold text-center mb-4">¿Cómo funciona Abrazarte?</h2>
           <p className="text-xl text-center text-gray-600 mb-12 max-w-3xl mx-auto">
             Encontrar el lugar perfecto para tu ser querido es sencillo con nuestro proceso de 3 pasos
           </p>
@@ -80,7 +80,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">¿Por qué elegir Find Care?</h2>
+              <h2 className="text-3xl font-bold mb-6">¿Por qué elegir Abrazarte?</h2>
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="mt-1 mr-4 bg-brand/20 p-2 rounded-full">
@@ -140,7 +140,7 @@ export default function Home() {
             <div className="bg-white p-8 rounded-xl shadow-md">
               <div className="text-5xl text-brand mb-4">&quot;</div>
               <p className="text-gray-700 text-lg italic mb-6">
-                Con Find Care fue fácil comparar opciones y hablar con las residencias. Encontramos el lugar perfecto para mi
+                Con Abrazarte fue fácil comparar opciones y hablar con las residencias. Encontramos el lugar perfecto para mi
                 papá, ¡un alivio total!
               </p>
               <div className="flex text-yellow-400 mb-2">
@@ -168,7 +168,7 @@ export default function Home() {
             <div className="bg-white p-8 rounded-xl shadow-md">
               <div className="text-5xl text-brand mb-4">&quot;</div>
               <p className="text-gray-700 text-lg italic mb-6">
-                No sabíamos por dónde empezar para elegir una residencia. Find Care lo hizo simple, con asesoramiento en cada
+                No sabíamos por dónde empezar para elegir una residencia. Abrazarte lo hizo simple, con asesoramiento en cada
                 paso. ¡Lo recomiendo!
               </p>
               <div className="flex text-yellow-400 mb-2">
@@ -310,7 +310,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">¿Listo para encontrar la residencia ideal?</h2>
           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-            Únete a cientos de familias que han encontrado el lugar perfecto para sus seres queridos con Find Care
+            Únete a cientos de familias que han encontrado el lugar perfecto para sus seres queridos con Abrazarte
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/buscar-geriatrico">
@@ -337,7 +337,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Find Care</h3>
+              <h3 className="text-lg font-bold mb-4">Abrazarte</h3>
               <p className="text-gray-300">Ayudamos a familias a encontrar el mejor cuidado para sus seres queridos.</p>
             </div>
 
@@ -379,7 +379,7 @@ export default function Home() {
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
                   </svg>
-                  <span>info@findcare.com</span>
+                  <span>info@abrazarte.com.ar</span>
                 </li>
               </ul>
             </div>
@@ -407,7 +407,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-            {/* <p>&copy; {new Date().getFullYear()} Find Care. Todos los derechos reservados.</p> */}
+            {/* <p>&copy; {new Date().getFullYear()} Abrazarte. Todos los derechos reservados.</p> */}
           </div>
         </div>
       </footer>

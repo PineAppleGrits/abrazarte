@@ -11,7 +11,7 @@ export default function QuienesSomos() {
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">¿Quiénes Somos?</h1>
               <p className="text-lg text-gray-700 mb-6">
-                Find Care nació con una misión clara: ayudar a las familias a encontrar el mejor cuidado para sus seres queridos
+                Abrazarte nació con una misión clara: ayudar a las familias a encontrar el mejor cuidado para sus seres queridos
                 mayores, simplificando un proceso que suele ser complejo y emocionalmente desafiante.
               </p>
               <p className="text-lg text-gray-700">
@@ -20,7 +20,7 @@ export default function QuienesSomos() {
               </p>
             </div>
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
-              <Image src="/placeholder.svg?height=400&width=600" alt="Equipo de Find Care" fill className="object-cover" />
+              <Image src="/placeholder.svg?height=400&width=600" alt="Equipo de Abrazarte" fill className="object-cover" />
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@ export default function QuienesSomos() {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Nuestra Historia</h2>
             <p className="text-lg text-gray-700">
-              Find Care fue fundada en XXXX por un grupo de profesionales que experimentaron personalmente los desafíos de
+              Abrazarte fue fundada en XXXX por un grupo de profesionales que experimentaron personalmente los desafíos de
               encontrar el cuidado adecuado para sus padres y abuelos. Frustrados por la falta de información centralizada y
               transparente, decidieron crear una solución que ayudara a otras familias en situaciones similares.
             </p>
@@ -122,22 +122,22 @@ export default function QuienesSomos() {
               {
                 name: "Pepe",
                 role: "Fundador y CEO",
-                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Find Care con visión y determinación.",
+                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Abrazarte con visión y determinación.",
               },
               {
                 name: "Pepe",
                 role: "Fundador y CEO",
-                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Find Care con visión y determinación.",
+                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Abrazarte con visión y determinación.",
               },
               {
                 name: "Pepe",
                 role: "Fundador y CEO",
-                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Find Care con visión y determinación.",
+                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Abrazarte con visión y determinación.",
               },
               {
                 name: "Pepe",
                 role: "Fundador y CEO",
-                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Find Care con visión y determinación.",
+                bio: "Pepe es un emprendedor apasionado por la tecnología y el impacto social. Con más de 10 años de experiencia en el sector, lidera el equipo de Abrazarte con visión y determinación.",
               },
             ].map((member, index) => (
               <div key={index} className="bg-white border rounded-lg overflow-hidden shadow-sm max-w-xs">
@@ -164,7 +164,7 @@ export default function QuienesSomos() {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">¿Cómo Trabajamos?</h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-12">
-            En Find Care, nos dedicamos a simplificar el proceso de búsqueda y selección de residencias geriátricas, brindando
+            En Abrazarte, nos dedicamos a simplificar el proceso de búsqueda y selección de residencias geriátricas, brindando
             herramientas y recursos para que las familias tomen decisiones informadas.
           </p>
 

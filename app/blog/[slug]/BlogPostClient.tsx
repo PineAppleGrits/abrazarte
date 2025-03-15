@@ -184,7 +184,7 @@ export default function BlogPostClient({ post, nextPost, prevPost, relatedPosts 
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold mb-6">¿Necesitas ayuda para encontrar la residencia ideal?</h2>
             <p className="text-lg text-gray-700 mb-8">
-              En Find Care te ayudamos a encontrar la residencia geriátrica que mejor se adapte a las necesidades de tu ser
+              En Abrazarte te ayudamos a encontrar la residencia geriátrica que mejor se adapte a las necesidades de tu ser
               querido.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

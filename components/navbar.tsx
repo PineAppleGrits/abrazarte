@@ -44,7 +44,7 @@ export async function Navbar() {
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-white text-xl font-bold">Find Care</span>
+              <span className="text-white text-xl font-bold">Abrazarte</span>
             </div>
           </Link>
         </div>

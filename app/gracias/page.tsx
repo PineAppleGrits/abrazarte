@@ -4,7 +4,7 @@ import { CheckCircle, Home, ArrowLeft } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Gracias por tu mensaje | Find Care",
+  title: "Gracias por tu mensaje | Abrazarte",
   description: "Hemos recibido tu mensaje y nos pondremos en contacto contigo pronto.",
   robots: "noindex, nofollow",
 }

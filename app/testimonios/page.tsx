@@ -16,7 +16,7 @@ export default async function Testimonios() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Testimonios</h1>
             <p className="text-lg text-gray-700">
-              Descubre las experiencias de familias que encontraron el lugar ideal para sus seres queridos a través de Find Care.
+              Descubre las experiencias de familias que encontraron el lugar ideal para sus seres queridos a través de Abrazarte.
             </p>
           </div>
         </div>
@@ -55,7 +55,7 @@ export default async function Testimonios() {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">¿Listo para encontrar el lugar ideal?</h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8">
-            Únete a cientos de familias que han encontrado la residencia perfecta para sus seres queridos a través de Find Care.
+            Únete a cientos de familias que han encontrado la residencia perfecta para sus seres queridos a través de Abrazarte.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/buscar-geriatrico">

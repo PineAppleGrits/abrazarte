@@ -126,7 +126,7 @@ async function main() {
         
         <ul>
           <li>Recomendaciones de médicos o trabajadores sociales</li>
-          <li>Plataformas especializadas como Find Care</li>
+          <li>Plataformas especializadas como Abrazarte</li>
           <li>Opiniones de otras familias</li>
           <li>Directorios de residencias habilitadas</li>
         </ul>
@@ -177,7 +177,7 @@ async function main() {
         
         <p>Elegir la residencia geriátrica adecuada requiere tiempo, investigación y consideración cuidadosa de múltiples factores. Recuerda que el objetivo final es proporcionar a tu ser querido un entorno seguro, estimulante y digno donde pueda disfrutar de esta etapa de su vida con la mejor calidad posible.</p>
         
-        <p>En Find Care entendemos lo desafiante que puede ser este proceso, y estamos aquí para acompañarte en cada paso del camino. Nuestra plataforma te permite filtrar opciones según tus necesidades específicas, acceder a opiniones verificadas y comparar residencias de manera transparente.</p>
+        <p>En Abrazarte entendemos lo desafiante que puede ser este proceso, y estamos aquí para acompañarte en cada paso del camino. Nuestra plataforma te permite filtrar opciones según tus necesidades específicas, acceder a opiniones verificadas y comparar residencias de manera transparente.</p>
       `,
       tags: ["residencias geriátricas", "adultos mayores", "cuidado", "tercera edad", "elección"],
       relatedPosts: [2, 3, 4],

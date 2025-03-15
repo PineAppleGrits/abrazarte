@@ -9,7 +9,7 @@ import QueryProvider from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Find Care - Encuentra la mejor institución geriátrica",
+  title: "Abrazarte - Encuentra la mejor institución geriátrica",
   description: "Te ayudamos a encontrar la mejor institución geriátrica para tus seres queridos",
 };
 
