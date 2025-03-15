@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { auth } from "@/auth";
 import UserDropdown from "./UserDropdown";
-
+import logo from "@/public/logo-small.jpg";
+import Image from "next/image";
 export async function Navbar() {
   const session = await auth();
   const user = session?.user;
@@ -11,40 +12,10 @@ export async function Navbar() {
     <header className="bg-primary w-full">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center py-2">
-          <Link href="/" className="flex items-center py-4 px-6 border-r border-primary-foreground/20">
-            <div className="relative h-12 w-12 mr-2">
-              <div className="absolute inset-0 bg-white rounded-full flex items-center justify-center">
-                <div className="text-primary text-2xl font-bold">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M20 5C11.7157 5 5 11.7157 5 20C5 28.2843 11.7157 35 20 35C28.2843 35 35 28.2843 35 20C35 11.7157 28.2843 5 20 5Z"
-                      stroke="#333"
-                      strokeWidth="2"
-                    />
-                    <path
-                      d="M15 15C15 17.2091 13.2091 19 11 19C8.79086 19 7 17.2091 7 15C7 12.7909 8.79086 11 11 11C13.2091 11 15 12.7909 15 15Z"
-                      fill="white"
-                      stroke="#333"
-                      strokeWidth="2"
-                    />
-                    <path
-                      d="M33 15C33 17.2091 31.2091 19 29 19C26.7909 19 25 17.2091 25 15C25 12.7909 26.7909 11 29 11C31.2091 11 33 12.7909 33 15Z"
-                      fill="white"
-                      stroke="#333"
-                      strokeWidth="2"
-                    />
-                    <path
-                      d="M12 27C12 27 14.5 31 20 31C25.5 31 28 27 28 27"
-                      stroke="#333"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
+          <Link href="/" className="flex items-center py-4 px-6 border-r border-primary-foreground/20 gap-4">
+            <Image src={logo} alt="Abrazarte logo" width={48} height={48} />
             <div className="flex flex-col">
-              <span className="text-white text-xl font-bold">Abrazarte</span>
+              <span className="text-white text-2xl font-bold">Abrazarte</span>
             </div>
           </Link>
         </div>
